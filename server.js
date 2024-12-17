@@ -12,95 +12,89 @@
 
 //Importando com fastify
 
-import { fastify } from 'fastify';
-import { databaseMemory } from './databaseMemory.js';
-import { request } from 'http';
+import { fastify } from 'fastify'; // Importa a biblioteca Fastify para criar o servidor
+import { databaseMemory } from './databaseMemory.js'; // Importa o módulo de banco de dados em memória (possivelmente não utilizado)
+import { request } from 'http'; // Importa o módulo de requisição HTTP (possivelmente não utilizado neste contexto)
+import { databasePostgres } from './database-postgres.js'; // Importa o módulo de conexão com o PostgreSQL
 
-// criando o servidor fastify
+// Cria uma instância do servidor Fastify
 const server = fastify();
-// atribuindo a uma variável uma classe com seus métodos databaseMemory
-const database = new databaseMemory();
 
+// Cria uma instância da classe de banco de dados PostgreSQL
+const database = new databasePostgres(); 
 
+// Define uma rota GET para a raiz ('/'), retornando uma mensagem de teste
+server.get('/', () => { 
+  return "TESTE FASTIFY"; 
+}); 
 
-server.get('/', () => {
-  return "TESTE FASTIFY";
-  
-});
-
-server.get('/teste1', () => {
+// Define uma rota GET para '/teste1', retornando uma mensagem de teste
+server.get('/teste1', () => { 
   return "TESTE FASTIFY_1";
+}); 
 
-});
-
-server.get('/teste2', () => {
+// Define uma rota GET para '/teste2', retornando uma mensagem de teste
+server.get('/teste2', () => { 
   return "TESTE FASTIFY_2";
+}); 
 
-});
+// Criação de rotas do CRUD (Create, Read, Update, Delete) para vídeos
 
-// Criação de rotas do CRUD
+// Rota POST para criar um novo vídeo
+server.post('/videos', async (request, reply) => { 
+  // Extrai os dados do corpo da requisição (título, descrição e duração)
+  const { title, description, duration } = request.body; 
 
-server.post('/videos', (request, reply) => {
-
-  // desestruturação para pegar os valores do corpo da requisição
-  const { title, description, duration } = request.body;
-
-  database.create({
-    title: title,
-    description: description,
-    duration: duration,
+  // Chama a função create do banco de dados para inserir um novo vídeo
+  await database.create({ 
+    title: title, 
+    description: description, 
+    duration: duration, 
   });
 
-  // método criado na classe para listar os dados
-  console.log(database.list());
+  // Retorna uma resposta HTTP 201 (Criado)
+  return reply.status(201).send(); 
+}); 
 
+// Rota GET para listar vídeos
+server.get('/videos', async (request) => { 
+  const search = request.query.search; // Obtém o parâmetro de busca da query string
 
-  return reply.status(201).send();
+  // Chama a função list do banco de dados para buscar os vídeos
+  let videos = await database.list(search); 
+  console.log("VIDEOS: ", videos); // Loga os vídeos no console (para depuração)
+  return videos; // Retorna os vídeos como resposta
 });
 
-server.get('/videos', () => {
-  
-  let videos = database.list();
-  console.log("VIDEOS: ", videos);
-  return videos;
-});
+server.put('/videos/:id', (request, reply) => { // Define uma rota PUT para atualizar um vídeo específico
 
-server.put('/videos/:id', (request, reply) => {
+  const videoId = request.params.id; // Obtém o ID do vídeo a ser atualizado a partir dos parâmetros da requisição
+  const { title, description, duration } = request.body; // Extrai os novos dados do vídeo do corpo da requisição
 
-  const videoId = request.params.id;
-  const { title, description, duration } = request.body;
- 
-
-  try {
-    database.update(videoId, { title, description, duration });
-    return reply.status(204).send();
-  } catch (error) {
-    console.error(error.message);
-    return reply.status(404).send({ error: error.message });
+  try { // Tenta executar a atualização
+    database.update(videoId, { title, description, duration }); // Chama a função de atualização do banco de dados
+    return reply.status(204).send(); // Retorna uma resposta 204 (Sem Conteúdo) indicando que a atualização foi bem-sucedida
+  } catch (error) { // Captura qualquer erro que possa ocorrer durante a atualização
+    console.error(error.message); // Imprime a mensagem de erro no console para depuração
+    return reply.status(404).send({ error: error.message }); // Retorna uma resposta 404 (Não Encontrado) com a mensagem de erro, indicando que o vídeo não foi encontrado ou ocorreu outro problema
   }
-
 });
 
-server.delete('/videos/:id', (request, reply) => {
-  const videoId = request.params.id 
+server.delete('/videos/:id', (request, reply) => { // Define uma rota DELETE para excluir um vídeo específico
 
-  try {
-    database.delete(videoId);
-    return reply.status(204).send();
-  } catch(error) {
-    console.error("ERROR: ", error.message);
-    return reply.status(404).send({ error: error.message });
+  const videoId = request.params.id; // Obtém o ID do vídeo a ser excluído a partir dos parâmetros da requisição
+
+  try { // Tenta executar a exclusão
+    database.delete(videoId); // Chama a função de exclusão do banco de dados
+    return reply.status(204).send(); // Retorna uma resposta 204 (Sem Conteúdo) indicando que a exclusão foi bem-sucedida
+  } catch (error) { // Captura qualquer erro que possa ocorrer durante a exclusão
+    console.error("ERROR: ", error.message); // Imprime a mensagem de erro no console para depuração
+    return reply.status(404).send({ error: error.message }); // Retorna uma resposta 404 (Não Encontrado) com a mensagem de erro, indicando que o vídeo não foi encontrado ou ocorreu outro problema
   }
-  
-
 });
-
-
-
 
 server.listen({
-    port: 3000
+  port: process.env.PORT ?? 3000,
 });
-
 
 

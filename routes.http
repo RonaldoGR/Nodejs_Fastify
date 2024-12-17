@@ -3,9 +3,9 @@ Content-type: application/json
 
 
 {
-    "title": "Vídeo 03",
-    "description": "Terceiro vídeo",
-    "duration": 300
+    "title": "Video teste 2",
+    "description": "testando",
+    "duration": 400
 }
 
 ###
@@ -14,19 +14,19 @@ GET   http://localhost:3000/videos
 
 ###
 
-PUT   http://localhost:3000/videos/2317c97c-5086-433e-896a-09b549676d85
+PUT   http://localhost:3000/videos/f839fd7d-ae90-4949-80ab-a0af45bf2a94
 Content-type: application/json
 
 
  {
-    "title": "Vídeo 05",
-    "description": "Quinto vídeo",
-    "duration": 500
+    "title": "Vídeo teste part 2",
+    "description": "Atualização do vídeo part 2",
+    "duration": 400
  }
 
 ###
 
-DELETE   http://localhost:3000/videos/2317c97c-5086-433e-896a-09b549676d85
+DELETE   http://localhost:3000/videos/e47ec1c6-feee-489c-8669-a4ca80a47e19
 
 
 
