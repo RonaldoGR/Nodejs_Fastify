@@ -18,10 +18,13 @@ Fastify é utilizado para a criação e gerenciamento das rotas HTTP do servidor
 
 **Create**:
 * Endpoint POST /videos para criação de novos vídeos.
+
 **Read**:
 * Endpoint GET /videos para listar vídeos com suporte a filtros.
+
 **Update**:
 * Endpoint PUT /videos/:id para atualizar informações de um vídeo específico.
+
 **Delete**:
 * Endpoint DELETE /videos/:id para remover um vídeo específico.
 
