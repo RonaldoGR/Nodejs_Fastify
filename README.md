@@ -4,7 +4,7 @@
 Este código implementa uma API RESTful utilizando o Fastify e segue os padrões CRUD para gerenciamento de dados relacionados a vídeos fictícios.
 
 ## Links Rocketseat
-Projeto feito do canal da Rocketseat no YouTube: https://www.youtube.com/watch?v=hHM-hr9q4mo 
+Projeto feito do canal da Rocketseat no YouTube: https://www.youtube.com/watch?v=hHM-hr9q4mo <br>
 Plataforma da Rocketseat: https://www.rocketseat.com.br/
 
 ## Link Fastify
