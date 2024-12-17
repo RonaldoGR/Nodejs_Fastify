@@ -16,13 +16,13 @@ Link da documentação Fastify: https://fastify.dev/
 Fastify é utilizado para a criação e gerenciamento das rotas HTTP do servidor.
 ### Padrão CRUD:
 
-<strong>Create<strong>:
+**Create**:
 * Endpoint POST /videos para criação de novos vídeos.
-<strong>Read<strong>:
+**Read**:
 * Endpoint GET /videos para listar vídeos com suporte a filtros.
-<strong>Update</strong>:
+**Update**:
 * Endpoint PUT /videos/:id para atualizar informações de um vídeo específico.
-<strong>Delete</strong>:
+**Delete**:
 * Endpoint DELETE /videos/:id para remover um vídeo específico.
 
 ### Rotas Disponíveis:
