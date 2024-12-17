@@ -94,6 +94,7 @@ server.delete('/videos/:id', (request, reply) => { // Define uma rota DELETE par
 });
 
 server.listen({
+  host: '0.0.0.0',
   port: process.env.PORT ?? 3000,
 });
 
